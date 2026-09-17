@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cofre de Premios | Atenea</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="card-container">
+    <!-- Paso 1: Ingreso de usuario -->
+    <div id="step-user" class="step active">
+      <h1 class="brand-title">ATENEA</h1>
+      <p class="subtitle">Ingresá tu usuario para desbloquear tu premio</p>
+      
+      <div class="input-group">
+        <input type="text" id="username" placeholder="Tu usuario de Atenea" autocomplete="off" />
+      </div>
+      <button id="btn-start" class="btn-primary">Aceptar</button>
+    </div>
+
+    <!-- Paso 2: Cofre cerrado / animación -->
+    <div id="step-chest" class="step">
+      <h2 class="greeting">¡Bienvenido, <span id="display-user"></span>!</h2>
+      <p class="instruction">Tocá el cofre para abrirlo</p>
+
+      <div class="chest-wrapper" id="chest-box">
+        <div class="chest-icon" id="chest-icon">📦</div>
+        <div class="glow-effect" id="glow"></div>
+      </div>
+    </div>
+
+    <!-- Paso 3: Revelación del premio -->
+    <div id="step-reward" class="step">
+      <div class="badge">¡FELICITACIONES!</div>
+      <h2 class="reward-title">Tu premio es:</h2>
+      <div class="prize-card" id="prize-text">---</div>
+
+      <div class="claim-details">
+        <p><strong>Usuario:</strong> <span id="claim-user"></span></p>
+        <p><strong>Fecha y hora:</strong> <span id="claim-datetime"></span></p>
+      </div>
+
+      <a id="btn-claim" href="https://casinoatenea.club/?open=true" target="_blank" rel="noopener noreferrer" class="btn-claim">
+        CAPTURA Y RECLAMÁ
+      </a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
