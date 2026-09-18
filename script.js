@@ -1,4 +1,7 @@
-// Lista de premios configurables
+// CONFIGURACIÓN: Pegá acá la URL que te dio Apps Script
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzgzMqFx8cjHqMMS98SKUFIJvkifxbzINIQX7ITluQE22Fi6ALuFD9TMOZxxTSkdxWD/exec';
+
+// Lista de premios
 const prizes = [
   '3000 FICHAS',
   '4000 FICHAS',
@@ -27,6 +30,22 @@ const prizeText = document.getElementById('prize-text');
 const claimUser = document.getElementById('claim-user');
 const claimDatetime = document.getElementById('claim-datetime');
 
+// Función para enviar los datos a la planilla
+async function saveToSheet(data) {
+  try {
+    await fetch(GOOGLE_SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Evita bloqueos de CORS en GitHub Pages
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  } catch (err) {
+    console.error('Error al registrar reclamo:', err);
+  }
+}
+
 // Paso 1: Ingreso de usuario
 btnStart.addEventListener('click', () => {
   const name = usernameInput.value.trim();
@@ -41,21 +60,16 @@ btnStart.addEventListener('click', () => {
   stepChest.classList.add('active');
 });
 
-// Paso 2: Animación y revelación del premio
+// Paso 2: Apertura, asignación y guardado
 chestBox.addEventListener('click', () => {
-  // Prevenir clics repetidos
   chestBox.style.pointerEvents = 'none';
 
-  // Animación del destello y cambio de ícono
   glow.classList.add('open-animation');
   chestIcon.textContent = '✨';
 
-  // Revelación luego del destello
   setTimeout(() => {
-    // Selección aleatoria de premio
     const randomPrize = prizes[Math.floor(Math.random() * prizes.length)];
     
-    // Obtención de fecha y hora local formateada
     const now = new Date();
     const formattedDate = now.toLocaleDateString('es-AR', {
       day: '2-digit',
@@ -68,10 +82,18 @@ chestBox.addEventListener('click', () => {
       second: '2-digit'
     });
 
-    // Inyectar datos en la vista de reclamo
+    // Mostrar en pantalla
     prizeText.textContent = randomPrize;
     claimUser.textContent = currentUser;
     claimDatetime.textContent = `${formattedDate} - ${formattedTime}`;
+
+    // Enviar a la base de datos de Google Sheets
+    saveToSheet({
+      usuario: currentUser,
+      premio: randomPrize,
+      fecha: formattedDate,
+      hora: formattedTime
+    });
 
     stepChest.classList.remove('active');
     stepReward.classList.add('active');
